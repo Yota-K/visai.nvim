@@ -1,0 +1,17 @@
+# macOS
+.DS_Store
+
+# Neovim
+*.swp
+*.swo
+*~
+
+# Tags
+tags
+TAGS
+
+# Test coverage
+coverage/
+
+# Local development
+.local/
