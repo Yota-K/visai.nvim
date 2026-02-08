@@ -1,0 +1,50 @@
+local selection = require("visai.selection")
+
+describe("selection", function()
+  describe("detect_indent", function()
+    it("returns 0 for empty lines", function()
+      local result = selection.detect_indent({})
+      assert.are.equal(0, result)
+    end)
+
+    it("returns 0 for lines with only empty strings", function()
+      local result = selection.detect_indent({ "", "", "" })
+      assert.are.equal(0, result)
+    end)
+
+    it("returns 0 for lines without indentation", function()
+      local result = selection.detect_indent({ "hello", "world" })
+      assert.are.equal(0, result)
+    end)
+
+    it("returns 2 for 2-space indented lines", function()
+      local result = selection.detect_indent({ "  hello", "  world" })
+      assert.are.equal(2, result)
+    end)
+
+    it("returns 4 for 4-space indented lines", function()
+      local result = selection.detect_indent({ "    hello", "    world" })
+      assert.are.equal(4, result)
+    end)
+
+    it("returns minimum indent for mixed indentation", function()
+      local result = selection.detect_indent({ "  hello", "    world", "      deep" })
+      assert.are.equal(2, result)
+    end)
+
+    it("ignores empty lines when calculating indent", function()
+      local result = selection.detect_indent({ "", "    hello", "", "    world", "" })
+      assert.are.equal(4, result)
+    end)
+
+    it("ignores lines with only whitespace", function()
+      local result = selection.detect_indent({ "    hello", "   ", "    world" })
+      assert.are.equal(4, result)
+    end)
+
+    it("handles tab characters", function()
+      local result = selection.detect_indent({ "\thello", "\tworld" })
+      assert.are.equal(1, result)
+    end)
+  end)
+end)
