@@ -10,7 +10,9 @@ local function clean_output(text)
   result = result:gsub("\027%].-\007", "")
   result = result:gsub("\027%].-\027\\", "")
   -- Remove CSI sequences (ESC [ ... letter)
-  result = result:gsub("\027%[%<?[%d;]*[A-Za-z]", "")
+  result = result:gsub("\027%[%?[%d;]*[A-Za-z]", "")
+  result = result:gsub("\027%[%<[%d;]*[A-Za-z]", "")
+  result = result:gsub("\027%[[%d;]*[A-Za-z]", "")
   -- Remove any remaining ESC sequences
   result = result:gsub("\027[^%[%]]?[%w]*", "")
   -- Remove BEL
