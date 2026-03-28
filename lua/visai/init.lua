@@ -86,7 +86,7 @@ function M.execute(sel, instruction)
 
     on_error = function(msg)
       updater.cancel()
-      progress.finish(false)
+      progress.finish(false, msg)
     end,
   })
 end

@@ -47,7 +47,7 @@ function M.open()
   return M.state
 end
 
-function M.finish(success)
+function M.finish(success, error_msg)
   if not M.state then
     return
   end
@@ -64,7 +64,14 @@ function M.finish(success)
     local title = success and " Complete " or " Error "
     vim.api.nvim_win_set_config(win_id, { title = title, title_pos = "center" })
 
-    local msg = success and "Done! Press q or <Esc> to close" or "Failed. Press q or <Esc> to close"
+    local msg
+    if success then
+      msg = "Done! Press q or <Esc> to close"
+    elseif error_msg then
+      msg = error_msg .. " — Press q or <Esc> to close"
+    else
+      msg = "Failed. Press q or <Esc> to close"
+    end
     vim.api.nvim_buf_set_option(bufnr, "modifiable", true)
     vim.api.nvim_buf_set_lines(bufnr, 0, -1, false, { msg })
     vim.api.nvim_buf_set_option(bufnr, "modifiable", false)
